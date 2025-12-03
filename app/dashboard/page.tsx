@@ -6,6 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import StockFetcher from '../components/StockFetcher';
+import StockList from '../components/StockList';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -53,7 +54,7 @@ export default function BasicTabs() {
             </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-            <StockFetcher initialStockName="삼성전자" />
+            <StockList />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
             <StockFetcher initialStockName="LG전자" />
