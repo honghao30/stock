@@ -4,6 +4,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 // 💡 중요: 'types/stock' 경로는 실제 프로젝트 구조에 맞게 수정하세요.
 import { StockResponse, ApiResponse, StockItem } from '../../types/stock';
+import { getPreviousDayDate } from '../../../../src/utils/date';
 
 const BASE_URL = 'https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo';
 
@@ -17,10 +18,11 @@ export async function GET(request: NextRequest): Promise<NextResponse<StockRespo
         }, { status: 500 });
     }
 
+    const defaultBasDt = getPreviousDayDate();
     const { searchParams } = new URL(request.url);
     
     // 1. 쿼리 파라미터 추출 및 기본값 설정
-    const basDt = searchParams.get('basDt') || '20231201'; // 기준일자 (필수 아닐 경우 기본값 설정)
+    const basDt = searchParams.get(`${defaultBasDt}`) || defaultBasDt; // 기준일자 (필수 아닐 경우 기본값 설정)
     const numOfRows = searchParams.get('numOfRows') || '100'; // 한 페이지 결과 수
     const pageNo = searchParams.get('pageNo') || '1'; // 페이지 번호
     

@@ -3,6 +3,7 @@
 'use client'; 
 
 import React, { useState, useEffect } from 'react';
+import { getPreviousDayDate } from '../../src/utils/date';
 // import { StockItem } from '@/types/stock'; // 실제 타입 경로는 프로젝트에 맞게 수정하세요.
 
 // 간단한 타입 정의 (임시)
@@ -18,6 +19,8 @@ export default function StockList() {
     const [stockList, setStockList] = useState<StockItem[] | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const basDt = getPreviousDayDate(); 
+    const displayBasDt = `${basDt.slice(0, 4)}년 ${basDt.slice(4, 6)}월 ${basDt.slice(6, 8)}일`;
 
     useEffect(() => {
         const fetchStockList = async () => {
@@ -26,7 +29,7 @@ export default function StockList() {
 
             // 💡 중요: 내부 API Route 호출
             // 20231201 기준, 10개 종목을 가져오도록 요청
-            const internalApiUrl = `/api/stock/list/?basDt=20231201&numOfRows=50`;
+            const internalApiUrl = `/api/stock/list/?basDt=${basDt}&numOfRows=50`;
 
             try {
                 const response = await fetch(internalApiUrl);
@@ -55,7 +58,7 @@ export default function StockList() {
 
     return (
         <div className="p-4">
-            <h2 className="text-xl font-bold mb-4">주식 목록 (2023년 12월 1일 기준)</h2>
+            <h2 className="text-xl font-bold mb-4">주식 목록  ({displayBasDt} 기준) </h2>
             <table className="min-w-full divide-y divide-gray-200">
                 <thead>
                     <tr>
